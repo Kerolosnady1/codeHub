@@ -13,7 +13,7 @@ struct Question_
     int correctOption;
 };
 
-Question questions[100];
+Question_ questions[100];
 int userScores[100][100];
 
 // Manage User Data
@@ -107,6 +107,56 @@ void takeExam(const Question_ examQuestions[], int totalExamQuestions, int userI
 
 // Grade Exam
 
+#include <iostream>
+using namespace std;
+
+void Exam_Grade(int answer[], int correctanswer[], int numofquestions)
+{
+    int sizeofanswer = sizeof(answer) / sizeof(answer[0]);
+    int sizeofcorrectanswer = sizeof(correctanswer) / sizeof(correctanswer[0]);
+    if (sizeofanswer != sizeofcorrectanswer)
+    {
+        cout << "You forgot to answer some questions!" << endl;
+        return;
+    }
+
+    int grade = 0;
+
+    for (int i = 0; i < numofquestions; i++)
+    {
+        if (answer[i] == correctanswer[i])
+        {
+            grade++;
+        }
+    }
+
+    double percentage = ((double)grade / numofquestions) * 100;
+
+    cout << "Number of questions answered correctly: " << grade << endl;
+    cout << "Percentage: " << percentage << "%" << endl;
+
+    if (percentage >= 90)
+    {
+        cout << "Your grade is: A" << endl;
+    }
+    else if (percentage >= 80)
+    {
+        cout << "Your grade is: B" << endl;
+    }
+    else if (percentage >= 70)
+    {
+        cout << "Your grade is: C" << endl;
+    }
+    else if (percentage >= 60)
+    {
+        cout << "Your grade is: D" << endl;
+    }
+    else
+    {
+        cout << "Your grade is: F" << endl;
+    }
+}
+
 // Save and Load Data
 
 // Display Results
@@ -186,4 +236,6 @@ int main()
     // Save and Load Data
 
     // Display Results
+
+    return 0;
 }
