@@ -2,10 +2,11 @@
 #include <string>
 #include <ctime>
 #include <cstdlib>
+#include <vector>
 #include <fstream>
 using namespace std;
 
-struct Question
+struct Question_
 {
     string text;
     string options[4];
@@ -15,23 +16,12 @@ struct Question
 Question questions[100];
 int userScores[100][100];
 
-Question questions[100];
-int totalQuestions = 0;
-int userIDs[100];
-string userNames[100];
-int userScores[100][100];
-int totalUsers = 0;
-
 // Manage User Data
 
 // Add Questions
 
 // Display Exam Data
 
-#include <iostream>
-#include <vector>
-#include <string>
-using namespace std;
 struct Question
 {
     string text;
@@ -91,7 +81,7 @@ void createExam()
 }
 
 // Take Exam
-void takeExam(const Question examQuestions[], int totalExamQuestions, int userId)
+void takeExam(const Question_ examQuestions[], int totalExamQuestions, int userId)
 {
     if (totalExamQuestions == 0)
     {
@@ -123,6 +113,11 @@ void takeExam(const Question examQuestions[], int totalExamQuestions, int userId
 
 int main()
 {
+
+    int choice;
+    Question_ examQuestions[100];
+    int totalExamQuestions = 0;
+
     cout << "=======================================";
     cout << "\n======= Exam Management System ========\n";
     cout << "=======================================\n";
@@ -137,6 +132,11 @@ int main()
     cout << "9. Display Results\n";
     cout << "10. Exit\n";
     cout << "Choose an option: ";
+    cin >> choice;
+
+    switch (choice)
+    {
+    }
 
     // Manage User Data
 
@@ -178,7 +178,6 @@ int main()
     // Create Exam
 
     createExam();
-        
 
     // Take Exam
 
