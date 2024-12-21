@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <ctime>
+#include <cstdlib>
 #include <fstream>
 using namespace std;
 
@@ -10,6 +12,44 @@ using namespace std;
 // Display Exam Data
 
 // Create Exam
+void createExam()
+{
+    srand(time(0));
+    int numofQuestions, Questions;
+    cout << "How many questions do you want to add? ";
+    cin >> numofQuestions;
+    ofstream file("exam.Q");
+    if (numofQuestions <= 5)
+    {
+        cout << "start the exam " << endl;
+    }
+    else
+    {
+        cout << "Not enough questions available";
+    }
+    file << "Question,Ans A,Ans B,Ans C,Ans D,Correct Answer\n";
+    for (int i = 1; i <= numofQuestions; ++i)
+    {
+        string question, ansA, ansB, ansC, ansD;
+        char correctAnswer;
+        cout << "Enter Question " << i << ": ";
+        cin >> question;
+        cout << "Ans A: ";
+        cin >> ansA;
+        cout << "Ans B: ";
+        cin >> ansB;
+        cout << "Ans C: ";
+        cin >> ansC;
+        cout << "Ans D: ";
+        cin >> ansD;
+        correctAnswer = 'A' + (rand() % 4);
+        file << question << "," << ansA << "," << ansB << "," << ansC << "," << ansD << "," << correctAnswer << "\n";
+        cout << "Correct answer for this question: " << correctAnswer << endl;
+    }
+
+    file.close();
+    cout << "Exam saved to 'exam.Q'!" << endl;
+}
 
 // Take Exam
 void takeExam(const Question examQuestions[], int totalExamQuestions, int userId)
