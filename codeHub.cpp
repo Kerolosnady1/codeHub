@@ -5,6 +5,16 @@
 #include <fstream>
 using namespace std;
 
+struct Question
+{
+    string text;
+    string options[4];
+    int correctOption;
+};
+
+Question questions[100];
+int userScores[100][100];
+
 // Manage User Data
 
 // Add Questions
