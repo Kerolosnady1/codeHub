@@ -18,6 +18,38 @@ int userScores[100][100];
 
 // Manage User Data
 
+void Exam_Informatoion(string sub, string nameDoc, int numQues, int numroom, int timelimit)
+{
+
+    cout << "\t \t \t \t \t    ===>>EXAM DATA<<=== \n \n \n";
+    cout << " THE NAME OF SUBJECT:: \n  ==>>";
+    cin >> sub;
+    cout << "\n";
+    cout << " DOCTOR Name:: \n =>> ";
+    cin >> nameDoc;
+    cout << "\n";
+    cout << " NUMBERS OF QUESTIONS:: \n   =>> ";
+    cin >> numQues;
+    cout << "\n";
+    cout << "Enter NUMBER OF ROOM:: \n  =>> ";
+    cin >> numroom;
+    cout << "\n";
+    cout << "TIME LIMIT:: \n   =>> ";
+    cin >> timelimit;
+    cout << "\n";
+    cout << "\t  \t \t $$##=====================================================##$$ \n \n \n\n";
+}
+
+void Student_Data(string name, int ID)
+{
+    cout << "\t \t \t \t \t ===>>STUDENT DATA<<===\t \n \n";
+    cout << "Enter your Name:: \n =>> ";
+    cin >> name;
+    cout << "\n";
+    cout << "Enter your ID:: \n =>> ";
+    cin >> ID;
+}
+
 // Add Questions
 
 // Display Exam Data
@@ -186,6 +218,14 @@ int main()
     }
 
     // Manage User Data
+
+    string subject, doctorname, namestudent;
+
+    int num, id, questionnums, roomnum, limittime;
+
+    Exam_Informatoion(subject, doctorname, questionnums, roomnum, limittime);
+
+    Student_Data(namestudent, num);
 
     // Add Questions
 
