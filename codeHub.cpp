@@ -15,11 +15,40 @@ struct Question
 Question questions[100];
 int userScores[100][100];
 
+Question questions[100];
+int totalQuestions = 0;
+int userIDs[100];
+string userNames[100];
+int userScores[100][100];
+int totalUsers = 0;
+
 // Manage User Data
 
 // Add Questions
 
 // Display Exam Data
+
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+struct Question
+{
+    string text;
+    vector<string> choices;
+};
+void displayQuestions(const vector<Question> &questions)
+{
+    for (size_t i = 0; i < questions.size(); ++i)
+    {
+        cout << "Question " << i + 1 << ": " << questions[i].text << "\n";
+        for (size_t j = 0; j < questions[i].choices.size(); ++j)
+        {
+            cout << "  " << char('A' + j) << ". " << questions[i].choices[j] << "\n";
+        }
+        cout << "\n";
+    }
+}
 
 // Create Exam
 void createExam()
@@ -91,6 +120,7 @@ void takeExam(const Question examQuestions[], int totalExamQuestions, int userId
 // Save and Load Data
 
 // Display Results
+
 int main()
 {
     cout << "=======================================";
@@ -107,4 +137,54 @@ int main()
     cout << "9. Display Results\n";
     cout << "10. Exit\n";
     cout << "Choose an option: ";
+
+    // Manage User Data
+
+    // Add Questions
+
+    // Display Exam Data
+
+    vector<Question> questions;
+
+    int numQuestions;
+    cout << "Enter the number of questions: ";
+    cin >> numQuestions;
+    cin.ignore();
+
+    for (int i = 0; i < numQuestions; ++i)
+    {
+        Question q;
+        cout << "Enter the text for question " << i + 1 << ": ";
+        getline(cin, q.text);
+
+        int numChoices;
+        cout << "Enter the number of choices for this question: ";
+        cin >> numChoices;
+        cin.ignore();
+
+        q.choices.resize(numChoices);
+        for (int j = 0; j < numChoices; ++j)
+        {
+            cout << "Enter choice " << j + 1 << ": ";
+            getline(cin, q.choices[j]);
+        }
+
+        questions.push_back(q);
+    }
+
+    cout << "\nDisplaying Questions:\n";
+    displayQuestions(questions);
+
+    // Create Exam
+
+    createExam();
+        
+
+    // Take Exam
+
+    // Grade Exam
+
+    // Save and Load Data
+
+    // Display Results
 }
