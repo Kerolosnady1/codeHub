@@ -107,9 +107,6 @@ void takeExam(const Question_ examQuestions[], int totalExamQuestions, int userI
 
 // Grade Exam
 
-#include <iostream>
-using namespace std;
-
 void Exam_Grade(int answer[], int correctanswer[], int numofquestions)
 {
     int sizeofanswer = sizeof(answer) / sizeof(answer[0]);
