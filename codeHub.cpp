@@ -188,12 +188,53 @@ void Exam_Grade(int answer[], int correctanswer[], int numofquestions)
 
 // Save and Load Data
 
+void addStudentData()
+{
+    ofstream file("students.txt", ios::app);
+
+    if (!file)
+    {
+
+        return;
+    }
+
+    int id;
+    float grade;
+    cout << "Enter Student ID: ";
+    cin >> id;
+    cout << "Enter Grade: ";
+    cin >> grade;
+
+    file << id << " " << grade << endl;
+    file.close();
+    cout << "Data saved successfully!" << endl;
+}
+
+void displayStudentData()
+{
+    ifstream file("students.txt");
+    if (!file)
+    {
+        return;
+    }
+
+    int id;
+    float grade;
+    cout << "Students Data:" << endl;
+    cout << "ID\tGrade" << endl;
+    while (file >> id >> grade)
+    {
+        cout << id << "\t" << grade << endl;
+    }
+    file.close();
+}
+
 // Display Results
 
 int main()
 {
 
-    int choice;
+    int choices;
     Question_ examQuestions[100];
     int totalExamQuestions = 0;
 
@@ -211,9 +252,9 @@ int main()
     cout << "9. Display Results\n";
     cout << "10. Exit\n";
     cout << "Choose an option: ";
-    cin >> choice;
+    cin >> choices;
 
-    switch (choice)
+    switch (choices)
     {
     }
 
@@ -271,6 +312,33 @@ int main()
     // Grade Exam
 
     // Save and Load Data
+
+    int choice;
+
+    do
+    {
+        cout << "\nChoice an operation to perform" << endl;
+        cout << "1. Add student data " << endl;
+        cout << "2. display student data" << endl;
+        cout << "3. Exit" << endl;
+        cout << "Your choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            addStudentData();
+            break;
+        case 2:
+            displayStudentData();
+            break;
+        case 3:
+            cout << "program terminated." << endl;
+            break;
+        default:
+            cout << "Invalid choice!" << endl;
+        }
+    } while (choice != 3);
 
     // Display Results
 
