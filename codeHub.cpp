@@ -52,6 +52,57 @@ void Student_Data(string name, int ID)
 
 // Add Questions
 
+void addQ()
+{
+    int x;
+    cout << "How many questions would you like to add?" << endl;
+    cin >> x;
+    int numberOfQuestions = x;
+    string questions[numberOfQuestions];
+    string choices[numberOfQuestions][4];
+    int correctAnswers[numberOfQuestions];
+    for (int i = 0; i < numberOfQuestions; i++)
+    {
+        cout << "Question " << i + 1 << ": ";
+        cin >> questions[i];
+        getline(cin, questions[i]);
+        for (int j = 0; j < 4; j++)
+        {
+            cout << "Choice " << j + 1 << " : ";
+            getline(cin, choices[i][j]);
+        }
+
+        cout << "Enter the correct answer (1 to 4): ";
+        cin >> correctAnswers[i];
+    }
+
+    int score = 0;
+    for (int i = 0; i < numberOfQuestions; i++)
+    {
+        cout << questions[i] << endl;
+        for (int j = 0; j < 4; j++)
+        {
+            cout << j + 1 << ". " << choices[i][j] << endl;
+        }
+
+        int userChoice;
+        cout << "Choose the correct answer (1-4): ";
+        cin >> userChoice;
+
+        if (userChoice == correctAnswers[i])
+        {
+            cout << "Correct answer!" << endl;
+            score++;
+        }
+        else
+        {
+            cout << "Wrong answer!" << endl;
+        }
+    }
+
+    cout << "You answered correctly " << score << " out of " << numberOfQuestions << " questions." << endl;
+}
+
 // Display Exam Data
 
 struct Question
@@ -269,6 +320,8 @@ int main()
     Student_Data(namestudent, num);
 
     // Add Questions
+
+    addQ();
 
     // Display Exam Data
 
