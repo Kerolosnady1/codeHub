@@ -33,6 +33,29 @@ int findUserIndex(int userId)
     return -1; // User not found
 }
 
+// Function to manage exam information data
+void Exam_Informatoion(string sub, string nameDoc, int numQues, int numroom, int timelimit)
+{
+
+    cout << "\t \t \t \t \t    ===>>EXAM DATA<<=== \n \n \n";
+    cout << " THE NAME OF SUBJECT:: \n  ==>> ";
+    cin >> sub;
+    cout << "\n";
+    cout << " DOCTOR Name:: \n =>> ";
+    cin >> nameDoc;
+    cout << "\n";
+    cout << " NUMBERS OF QUESTIONS:: \n   =>> ";
+    cin >> numQues;
+    cout << "\n";
+    cout << "Enter NUMBER OF ROOM:: \n  =>> ";
+    cin >> numroom;
+    cout << "\n";
+    cout << "TIME LIMIT:: \n   =>> ";
+    cin >> timelimit;
+    cout << "\n";
+    cout << "\t  \t \t $$##=====================================================##$$ \n \n \n\n";
+}
+
 // Function to manage user data
 void Student_Data()
 {
@@ -132,6 +155,10 @@ void takeExam(const Question examQuestions[], int totalExamQuestions, int userId
         cout << "Invalid user ID. Please register first.\n";
         return;
     }
+
+    string sub, nameDoc;
+    int numQues = totalExamQuestions, numroom, timelimit;
+    Exam_Informatoion(sub, nameDoc, numQues, numroom, timelimit);
 
     cout << "Starting the exam...\n";
     for (int i = 0; i < totalExamQuestions; ++i)
