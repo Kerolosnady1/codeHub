@@ -334,16 +334,16 @@ int main()
     do
     {
         cout << "\n===== Exam Management System =====\n";
-        cout << "1. Manage User Data\n";
-        cout << "2. Add Questions\n";
-        cout << "3. Display Exam Data\n";
-        cout << "4. Create Exam\n";
-        cout << "5. Take Exam\n";
-        cout << "6. Grade Exam\n";
-        cout << "7. Save Data\n";
-        cout << "8. Load Data\n";
-        cout << "9. Display Results\n";
-        cout << "10. Exit\n";
+        cout << "1. Manage User Data (USER)\n";
+        cout << "2. Add Questions (ADMIN)\n";
+        cout << "3. Display Exam Data (ADMIN)\n";
+        cout << "4. Create Exam (ADMIN)\n";
+        cout << "5. Take Exam (USER)\n";
+        cout << "6. Grade Exam (USER)\n";
+        cout << "7. Save Data (ADMIN)\n";
+        cout << "8. Load Data (ADMIN)\n";
+        cout << "9. Display Results (ADMIN)\n";
+        cout << "10. Exit (USER)\n";
         cout << "Choose an option: ";
         cin >> choice;
 
