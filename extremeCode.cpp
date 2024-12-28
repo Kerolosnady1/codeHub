@@ -50,7 +50,7 @@ void Exam_Informatoion(string sub, string nameDoc, int numQues, int numroom, int
     cout << "Enter NUMBER OF ROOM:: \n  =>> ";
     cin >> numroom;
     cout << "\n";
-    cout << "TIME LIMIT:: \n   =>> ";
+    cout << "TIME LIMIT IN MINUTES:: \n   =>> ";
     cin >> timelimit;
     cout << "\n";
     cout << "\t  \t \t $$##=====================================================##$$ \n \n \n\n";
@@ -305,7 +305,6 @@ void saveAndLoadData(bool save)
     }
 }
 
-// Function to display results in ascending order
 void DisplayResult()
 {
     if (totalUsers == 0)
@@ -314,18 +313,25 @@ void DisplayResult()
         return;
     }
 
-    // Sort users based on total scores
+    // Sort users based on their total correct scores
     for (int i = 0; i < totalUsers - 1; ++i)
     {
         for (int j = i + 1; j < totalUsers; ++j)
         {
-            int totalScoreI = 0, totalScoreJ = 0;
+            int correctAnswersI = 0, correctAnswersJ = 0;
+
+            // Calculate total correct answers for each user
             for (int k = 0; k < totalQuestions; ++k)
             {
-                totalScoreI += userScores[i][k];
-                totalScoreJ += userScores[j][k];
+                if (userScores[i][k] == questions[k].correctOption)
+                    ++correctAnswersI;
+
+                if (userScores[j][k] == questions[k].correctOption)
+                    ++correctAnswersJ;
             }
-            if (totalScoreI > totalScoreJ)
+
+            // Swap users if the first has a lower score
+            if (correctAnswersI > correctAnswersJ)
             {
                 swap(userIDs[i], userIDs[j]);
                 swap(userNames[i], userNames[j]);
@@ -340,13 +346,18 @@ void DisplayResult()
     cout << "\nResults in Ascending Order:\n";
     for (int i = 0; i < totalUsers; ++i)
     {
-        int totalScore = 0;
+        int correctAnswers = 0;
+
+        // Calculate total correct answers for this user
         for (int j = 0; j < totalQuestions; ++j)
         {
-            totalScore += userScores[i][j];
+            if (userScores[i][j] == questions[j].correctOption)
+                ++correctAnswers;
         }
-        double percentage = (totalScore * 100.0) / totalQuestions;
-        cout << "User ID: " << userIDs[i] << ", Name: " << userNames[i] << ", Total Score: " << totalScore
+
+        double percentage = (correctAnswers * 100.0) / totalQuestions;
+        cout << "User ID: " << userIDs[i] << ", Name: " << userNames[i]
+             << ", Correct Answers: " << correctAnswers
              << ", Percentage: " << percentage << "%\n";
     }
 }
