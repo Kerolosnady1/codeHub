@@ -119,14 +119,3 @@ https://en.cppreference.com/w/cpp/io/basic_istream
 
 This project is provided for educational purposes.
 You are free to modify and extend it for learning or academic use.
-
-
----
-
-If you want, I can also:
-- Refactor this code into **modern C++ (vectors & classes)**
-- Write a **professional project report**
-- Create **UML diagrams**
-- Help you choose a **license (MIT, GPL, etc.)**
-
-Just tell me 👍
