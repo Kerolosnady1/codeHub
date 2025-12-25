@@ -1,176 +1,164 @@
 #include <iostream>
 #include <string>
-#include <ctime>
-#include <cstdlib>
-#include <vector>
 #include <fstream>
+#include <iomanip>
 using namespace std;
 
-struct Question_
+// Struct to represent a question
+struct Question
 {
     string text;
     string options[4];
     int correctOption;
 };
 
-Question_ questions[100];
-int userScores[100][100];
+// Global variables
+Question questions[100];
+int totalQuestions = 0;
+int userIDs[100];
+string userNames[100];
+int userScores[100][100] = {0}; // Initialize to 0
+int totalUsers = 0;
 
-// Manage User Data
+// Find the index of a user by userId
+int findUserIndex(int userId)
+{
+    for (int i = 0; i < totalUsers; ++i)
+    {
+        if (userIDs[i] == userId)
+        {
+            return i;
+        }
+    }
+    return -1; // User not found
+}
 
+// Function to manage exam information data
 void Exam_Informatoion(string sub, string nameDoc, int numQues, int numroom, int timelimit)
 {
 
-    cout << "\t \t \t \t \t    ===>>EXAM DATA<<=== \n \n \n";
-    cout << " THE NAME OF SUBJECT:: \n  ==>>";
+    cout << "\t \t \t \t \t    ===> EXAM DATA <=== \n \n \n";
+    cout << " Subject Name: \n  => ";
     cin >> sub;
     cout << "\n";
-    cout << " DOCTOR Name:: \n =>> ";
+    cout << " Doctor Name: \n  => ";
     cin >> nameDoc;
     cout << "\n";
-    cout << " NUMBERS OF QUESTIONS:: \n   =>> ";
+    cout << " Number of Questions: \n  => ";
     cin >> numQues;
     cout << "\n";
-    cout << "Enter NUMBER OF ROOM:: \n  =>> ";
+    cout << "Enter The Room Number: \n  => ";
     cin >> numroom;
     cout << "\n";
-    cout << "TIME LIMIT:: \n   =>> ";
+    cout << "Time Limit in Minutes: \n  => ";
     cin >> timelimit;
     cout << "\n";
-    cout << "\t  \t \t $$##=====================================================##$$ \n \n \n\n";
+    cout << "\t  \t \t ##################################################### \n \n \n\n";
 }
 
-void Student_Data(string name, int ID)
+// Function to manage user data
+void Student_Data()
 {
-    cout << "\t \t \t \t \t ===>>STUDENT DATA<<===\t \n \n";
-    cout << "Enter your Name:: \n =>> ";
-    cin >> name;
-    cout << "\n";
-    cout << "Enter your ID:: \n =>> ";
-    cin >> ID;
+    int userId;
+    string userName;
+
+    cout << "Enter user ID: ";
+    cin >> userId;
+    cin.ignore();
+    cout << "Enter user name: ";
+    getline(cin, userName);
+
+    userIDs[totalUsers] = userId;
+    userNames[totalUsers] = userName;
+    totalUsers++;
+    cout << "User data saved successfully!\n";
 }
 
-// Add Questions
-
+// Function to add questions
 void addQ()
 {
-    int x;
-    cout << "How many questions would you like to add?" << endl;
-    cin >> x;
-    int numberOfQuestions = x;
-    string questions[numberOfQuestions];
-    string choices[numberOfQuestions][4];
-    int correctAnswers[numberOfQuestions];
-    for (int i = 0; i < numberOfQuestions; i++)
-    {
-        cout << "Question " << i + 1 << ": ";
-        cin >> questions[i];
-        getline(cin, questions[i]);
-        for (int j = 0; j < 4; j++)
-        {
-            cout << "Choice " << j + 1 << " : ";
-            getline(cin, choices[i][j]);
-        }
+    Question q;
+    cout << "Enter the question text: ";
+    cin.ignore();
+    getline(cin, q.text);
 
-        cout << "Enter the correct answer (1 to 4): ";
-        cin >> correctAnswers[i];
+    for (int i = 0; i < 4; ++i)
+    {
+        cout << "Enter option " << (i + 1) << ": ";
+        getline(cin, q.options[i]);
     }
 
-    int score = 0;
-    for (int i = 0; i < numberOfQuestions; i++)
-    {
-        cout << questions[i] << endl;
-        for (int j = 0; j < 4; j++)
-        {
-            cout << j + 1 << ". " << choices[i][j] << endl;
-        }
+    cout << "Enter the correct option number: ";
+    cin >> q.correctOption;
+    --q.correctOption; // Convert to zero-based index
 
-        int userChoice;
-        cout << "Choose the correct answer (1-4): ";
-        cin >> userChoice;
-
-        if (userChoice == correctAnswers[i])
-        {
-            cout << "Correct answer!" << endl;
-            score++;
-        }
-        else
-        {
-            cout << "Wrong answer!" << endl;
-        }
-    }
-
-    cout << "You answered correctly " << score << " out of " << numberOfQuestions << " questions." << endl;
+    questions[totalQuestions] = q;
+    totalQuestions++;
+    cout << "Question added successfully!\n";
 }
 
-// Display Exam Data
-
-struct Question
+// Function to display exam data
+void displayExamData()
 {
-    string text;
-    vector<string> choices;
-};
-void displayQuestions(const vector<Question> &questions)
-{
-    for (size_t i = 0; i < questions.size(); ++i)
+    if (totalQuestions == 0)
     {
-        cout << "Question " << i + 1 << ": " << questions[i].text << "\n";
-        for (size_t j = 0; j < questions[i].choices.size(); ++j)
+        cout << "No questions available.\n";
+        return;
+    }
+
+    for (int i = 0; i < totalQuestions; ++i)
+    {
+        cout << "Question " << (i + 1) << ": " << questions[i].text << "\n";
+        for (int j = 0; j < 4; ++j)
         {
-            cout << "  " << char('A' + j) << ". " << questions[i].choices[j] << "\n";
+            cout << "\tOption " << (j + 1) << ": " << questions[i].options[j] << "\n";
         }
-        cout << "\n";
+        cout << "\tCorrect Option: " << (questions[i].correctOption + 1) << "\n";
     }
 }
 
-// Create Exam
-void createExam()
+// Function to create an exam
+void CreateExam(Question examQuestions[], int &totalExamQuestions)
 {
-    srand(time(0));
-    int numofQuestions, Questions;
-    cout << "How many questions do you want to add? ";
-    cin >> numofQuestions;
-    ofstream file("exam.Q");
-    if (numofQuestions <= 5)
+    totalExamQuestions = 0;
+    int numQuestions;
+
+    cout << "Enter the number of questions for the exam: ";
+    cin >> numQuestions;
+
+    if (numQuestions > totalQuestions)
     {
-        cout << "start the exam " << endl;
-    }
-    else
-    {
-        cout << "Not enough questions available";
-    }
-    file << "Question,Ans A,Ans B,Ans C,Ans D,Correct Answer\n";
-    for (int i = 1; i <= numofQuestions; ++i)
-    {
-        string question, ansA, ansB, ansC, ansD;
-        char correctAnswer;
-        cout << "Enter Question " << i << ": ";
-        cin >> question;
-        cout << "Ans A: ";
-        cin >> ansA;
-        cout << "Ans B: ";
-        cin >> ansB;
-        cout << "Ans C: ";
-        cin >> ansC;
-        cout << "Ans D: ";
-        cin >> ansD;
-        correctAnswer = 'A' + (rand() % 4);
-        file << question << "," << ansA << "," << ansB << "," << ansC << "," << ansD << "," << correctAnswer << "\n";
-        cout << "Correct answer for this question: " << correctAnswer << endl;
+        cout << "Not enough questions available. Using all available questions.\n";
+        numQuestions = totalQuestions;
     }
 
-    file.close();
-    cout << "Exam saved to 'exam.Q'!" << endl;
+    for (int i = 0; i < numQuestions; ++i)
+    {
+        examQuestions[i] = questions[i];
+    }
+    totalExamQuestions = numQuestions;
+    cout << "Exam created successfully with " << numQuestions << " questions.\n";
 }
 
-// Take Exam
-void takeExam(const Question_ examQuestions[], int totalExamQuestions, int userId)
+// Function to take an exam
+void takeExam(const Question examQuestions[], int totalExamQuestions, int userId)
 {
     if (totalExamQuestions == 0)
     {
         cout << "No exam available. Create an exam first.\n";
         return;
     }
+
+    int userIndex = findUserIndex(userId);
+    if (userIndex == -1)
+    {
+        cout << "Invalid user ID. Please register first.\n";
+        return;
+    }
+
+    string sub, nameDoc;
+    int numQues = totalExamQuestions, numroom, timelimit;
+    Exam_Informatoion(sub, nameDoc, numQues, numroom, timelimit);
 
     cout << "Starting the exam...\n";
     for (int i = 0; i < totalExamQuestions; ++i)
@@ -183,217 +171,268 @@ void takeExam(const Question_ examQuestions[], int totalExamQuestions, int userI
         int answer;
         cout << "Enter your answer (1-4): ";
         cin >> answer;
-        userScores[userId][i] = answer - 1;
+
+        if (answer < 1 || answer > 4)
+        {
+            cout << "Invalid option. Please try again.\n";
+            --i; // Retry the question
+        }
+        else
+        {
+            userScores[userIndex][i] = answer - 1; // Convert to zero-based index
+        }
     }
     cout << "Exam completed!\n";
 }
 
-// Grade Exam
-
-void Exam_Grade(int answer[], int correctanswer[], int numofquestions)
+// Function to grade an exam
+void Exam_Grade(const Question examQuestions[], int totalExamQuestions, int userId)
 {
-    int sizeofanswer = sizeof(answer) / sizeof(answer[0]);
-    int sizeofcorrectanswer = sizeof(correctanswer) / sizeof(correctanswer[0]);
-    if (sizeofanswer != sizeofcorrectanswer)
+    if (totalExamQuestions == 0)
     {
-        cout << "You forgot to answer some questions!" << endl;
+        cout << "No exam or answers available to grade.\n";
         return;
     }
 
-    int grade = 0;
-
-    for (int i = 0; i < numofquestions; i++)
+    int userIndex = findUserIndex(userId);
+    if (userIndex == -1)
     {
-        if (answer[i] == correctanswer[i])
+        cout << "Invalid user ID. Please register first.\n";
+        return;
+    }
+
+    int score = 0;
+    for (int i = 0; i < totalExamQuestions; ++i)
+    {
+        if (userScores[userIndex][i] == examQuestions[i].correctOption)
         {
-            grade++;
+            ++score;
         }
     }
 
-    double percentage = ((double)grade / numofquestions) * 100;
+    double percentage = (score * 100.0) / totalExamQuestions;
+    cout << "Exam graded! Score for user ID " << userId << ": " << score << "/" << totalExamQuestions << "\n";
+    cout << "Correct answers: " << score << "\n";
+    cout << "Percentage: " << percentage << "%\n";
+}
 
-    cout << "Number of questions answered correctly: " << grade << endl;
-    cout << "Percentage: " << percentage << "%" << endl;
+// Function to save or load data
+void saveAndLoadData(bool save)
+{
+    if (save)
+    {
+        // Create and open a CSV file for saving the data
+        ofstream outFile("ExamData.csv");
 
-    if (percentage >= 90)
-    {
-        cout << "Your grade is: A" << endl;
-    }
-    else if (percentage >= 80)
-    {
-        cout << "Your grade is: B" << endl;
-    }
-    else if (percentage >= 70)
-    {
-        cout << "Your grade is: C" << endl;
-    }
-    else if (percentage >= 60)
-    {
-        cout << "Your grade is: D" << endl;
+        // Write the header for the CSV file
+        outFile << "UserID,UserName,UserGrade,CorrectAnswersCount\n"; // Header for User Data
+
+        // Save data for each user
+        for (int i = 0; i < totalUsers; ++i)
+        {
+            int correctAnswersCount = 0;
+            int totalScore = 0;
+
+            // Calculate the number of correct answers for each user
+            for (int j = 0; j < totalQuestions; ++j)
+            {
+                if (userScores[i][j] == questions[j].correctOption)
+                {
+                    correctAnswersCount++; // Count correct answers
+                    totalScore++;          // Increment score for correct answer
+                }
+            }
+
+            // Calculate percentage grade
+            double gradePercentage = (double(correctAnswersCount) / totalQuestions) * 100;
+
+            // Write User data to CSV (Formatted percentage grade)
+            outFile << userIDs[i] << ","                                  // UserID
+                    << userNames[i] << ","                                // UserName
+                    << fixed << setprecision(2) << gradePercentage << "," // UserGrade (Percentage)
+                    << correctAnswersCount << "\n";                       // CorrectAnswersCount
+        }
+
+        outFile.close();
+        cout << "Data saved successfully in CSV format!\n";
     }
     else
     {
-        cout << "Your grade is: F" << endl;
-    }
-}
-
-// Save and Load Data
-
-void addStudentData()
-{
-    ofstream file("students.txt", ios::app);
-
-    if (!file)
-    {
-
-        return;
-    }
-
-    int id;
-    float grade;
-    cout << "Enter Student ID: ";
-    cin >> id;
-    cout << "Enter Grade: ";
-    cin >> grade;
-
-    file << id << " " << grade << endl;
-    file.close();
-    cout << "Data saved successfully!" << endl;
-}
-
-void displayStudentData()
-{
-    ifstream file("students.txt");
-    if (!file)
-    {
-        return;
-    }
-
-    int id;
-    float grade;
-    cout << "Students Data:" << endl;
-    cout << "ID\tGrade" << endl;
-    while (file >> id >> grade)
-    {
-        cout << id << "\t" << grade << endl;
-    }
-    file.close();
-}
-
-// Display Results
-
-int main()
-{
-
-    int choices;
-    Question_ examQuestions[100];
-    int totalExamQuestions = 0;
-
-    cout << "=======================================";
-    cout << "\n======= Exam Management System ========\n";
-    cout << "=======================================\n";
-    cout << "1. Manage User Data\n";
-    cout << "2. Add Questions\n";
-    cout << "3. Display Exam Data\n";
-    cout << "4. Create Exam\n";
-    cout << "5. Take Exam\n";
-    cout << "6. Grade Exam\n";
-    cout << "7. Save Data\n";
-    cout << "8. Load Data\n";
-    cout << "9. Display Results\n";
-    cout << "10. Exit\n";
-    cout << "Choose an option: ";
-    cin >> choices;
-
-    switch (choices)
-    {
-    }
-
-    // Manage User Data
-
-    string subject, doctorname, namestudent;
-
-    int num, id, questionnums, roomnum, limittime;
-
-    Exam_Informatoion(subject, doctorname, questionnums, roomnum, limittime);
-
-    Student_Data(namestudent, num);
-
-    // Add Questions
-
-    addQ();
-
-    // Display Exam Data
-
-    vector<Question> questions;
-
-    int numQuestions;
-    cout << "Enter the number of questions: ";
-    cin >> numQuestions;
-    cin.ignore();
-
-    for (int i = 0; i < numQuestions; ++i)
-    {
-        Question q;
-        cout << "Enter the text for question " << i + 1 << ": ";
-        getline(cin, q.text);
-
-        int numChoices;
-        cout << "Enter the number of choices for this question: ";
-        cin >> numChoices;
-        cin.ignore();
-
-        q.choices.resize(numChoices);
-        for (int j = 0; j < numChoices; ++j)
+        ifstream inFile("ExamData.csv");
+        if (!inFile)
         {
-            cout << "Enter choice " << j + 1 << ": ";
-            getline(cin, q.choices[j]);
+            cout << "Error: Unable to open file.\n";
+            return;
         }
 
-        questions.push_back(q);
+        string line;
+        totalUsers = 0;
+
+        // Skip the header line
+        getline(inFile, line);
+
+        // Read user data from file
+        while (getline(inFile, line))
+        {
+            size_t pos = 0;
+            int userID, correctAnswersCount;
+            string userName;
+            double userGrade;
+
+            // Parse each line into the respective fields
+            pos = line.find(',');
+            userID = stoi(line.substr(0, pos)); // Get UserID
+            line.erase(0, pos + 1);
+
+            pos = line.find(',');
+            userName = line.substr(0, pos); // Get UserName
+            line.erase(0, pos + 1);
+
+            pos = line.find(',');
+            userGrade = stod(line.substr(0, pos)); // Get UserGrade (Percentage)
+            line.erase(0, pos + 1);
+
+            correctAnswersCount = stoi(line); // Get CorrectAnswersCount
+
+            // Store the loaded data into appropriate arrays (You could skip this step if not needed)
+            userIDs[totalUsers] = userID;
+            userNames[totalUsers] = userName;
+            totalUsers++;
+        }
+
+        inFile.close();
+        cout << "Data loaded successfully from CSV format!\n";
+    }
+}
+
+void DisplayResult()
+{
+    if (totalUsers == 0)
+    {
+        cout << "No users available.\n";
+        return;
     }
 
-    cout << "\nDisplaying Questions:\n";
-    displayQuestions(questions);
+    // Sort users based on their total correct scores
+    for (int i = 0; i < totalUsers - 1; ++i)
+    {
+        for (int j = i + 1; j < totalUsers; ++j)
+        {
+            int correctAnswersI = 0, correctAnswersJ = 0;
 
-    // Create Exam
+            // Calculate total correct answers for each user
+            for (int k = 0; k < totalQuestions; ++k)
+            {
+                if (userScores[i][k] == questions[k].correctOption)
+                    ++correctAnswersI;
 
-    createExam();
+                if (userScores[j][k] == questions[k].correctOption)
+                    ++correctAnswersJ;
+            }
 
-    // Take Exam
+            // Swap users if the first has a lower score
+            if (correctAnswersI > correctAnswersJ)
+            {
+                swap(userIDs[i], userIDs[j]);
+                swap(userNames[i], userNames[j]);
+                for (int k = 0; k < totalQuestions; ++k)
+                {
+                    swap(userScores[i][k], userScores[j][k]);
+                }
+            }
+        }
+    }
 
-    // Grade Exam
+    cout << "\nResults in Ascending Order:\n";
+    for (int i = 0; i < totalUsers; ++i)
+    {
+        int correctAnswers = 0;
 
-    // Save and Load Data
+        // Calculate total correct answers for this user
+        for (int j = 0; j < totalQuestions; ++j)
+        {
+            if (userScores[i][j] == questions[j].correctOption)
+                ++correctAnswers;
+        }
 
+        double percentage = (correctAnswers * 100.0) / totalQuestions;
+        cout << "User ID: " << userIDs[i] << ", Name: " << userNames[i]
+             << ", Correct Answers: " << correctAnswers
+             << ", Percentage: " << percentage << "%\n";
+    }
+}
+
+// Main Function
+int main()
+{
     int choice;
+    Question examQuestions[100];
+    int totalExamQuestions = 0;
 
     do
     {
-        cout << "\nChoice an operation to perform" << endl;
-        cout << "1. Add student data " << endl;
-        cout << "2. display student data" << endl;
-        cout << "3. Exit" << endl;
-        cout << "Your choice: ";
+        cout << "=======================================";
+        cout << "\n======= Exam Management System ========\n";
+        cout << "=======================================\n";
+        cout << "1. Manage User Data (USER)\n";
+        cout << "2. Add Questions (ADMIN)\n";
+        cout << "3. Display Exam Data (ADMIN)\n";
+        cout << "4. Create Exam (ADMIN)\n";
+        cout << "5. Take Exam (USER)\n";
+        cout << "6. Grade Exam (USER)\n";
+        cout << "7. Save Data (ADMIN)\n";
+        cout << "8. Load Data (ADMIN)\n";
+        cout << "9. Display Results (ADMIN)\n";
+        cout << "10. Exit (USER)\n";
+        cout << "Choose an option: ";
         cin >> choice;
 
         switch (choice)
         {
         case 1:
-            addStudentData();
+            Student_Data();
             break;
         case 2:
-            displayStudentData();
+            addQ();
             break;
         case 3:
-            cout << "program terminated." << endl;
+            displayExamData();
+            break;
+        case 4:
+            CreateExam(examQuestions, totalExamQuestions);
+            break;
+        case 5:
+        {
+            int userId;
+            cout << "Enter your user ID: ";
+            cin >> userId;
+            takeExam(examQuestions, totalExamQuestions, userId);
+            break;
+        }
+        case 6:
+        {
+            int userId;
+            cout << "Enter your user ID: ";
+            cin >> userId;
+            Exam_Grade(examQuestions, totalExamQuestions, userId);
+            break;
+        }
+        case 7:
+            saveAndLoadData(true);
+            break;
+        case 8:
+            saveAndLoadData(false);
+            break;
+        case 9:
+            DisplayResult();
+            break;
+        case 10:
+            cout << "Exiting...\n";
             break;
         default:
-            cout << "Invalid choice!" << endl;
+            cout << "Invalid choice. Try again.\n";
         }
-    } while (choice != 3);
-
-    // Display Results
+    } while (choice != 10);
 
     return 0;
 }
